@@ -1,0 +1,17 @@
+seq
+  label main
+    seq
+        cjump (>)
+          const 2
+          const 1
+         name L2 name L3
+        label L2
+            sxp
+              call
+                name print_int
+                const 1
+              call end
+        label L3
+    seq end
+  label end
+seq end

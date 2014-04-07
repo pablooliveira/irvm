@@ -1,0 +1,14 @@
+seq
+  label main
+  sxp
+    call
+      name print_int
+      binop (*)
+          const 56182
+          const 56182
+    call end
+  move
+    temp rv
+    const 0
+  label end
+seq end

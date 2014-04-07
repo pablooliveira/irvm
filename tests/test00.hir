@@ -1,0 +1,42 @@
+# This test is borrowed from HAVM documentation
+  label main
+    sxp
+        call
+            name print_int
+            eseq
+                seq
+                    seq
+                        cjump ne
+                            const 0
+                            const 0
+                            name l3
+                            name l4
+                        label l3
+                        cjump ne
+                            const 1
+                            const 0
+                            name l0
+                            name l1
+                        label l4
+                        cjump ne
+                            const 0
+                            const 0
+                            name l0
+                            name l1
+                    seq end
+                    label l0
+                    move
+                        temp t0
+                        const 0
+                    jump
+                        name l2
+                    label l1
+                    move
+                        temp t0
+                        const 1
+                    label l2
+                seq end
+                temp t0
+        call end
+    label end
+label print_int

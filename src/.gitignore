@@ -1,0 +1,7 @@
+*.o
+*.a
+irlexer.c
+irparser.c
+irparser.h
+irvm
+tags

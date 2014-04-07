@@ -1,0 +1,326 @@
+\input texinfo @c -*-texinfo-*-
+@comment %**start of header
+@setfilename irvm.info
+@include version.texi
+@settitle Irvm @value{VERSION}
+@setchapternewpage odd
+@finalout
+@comment %**end of header
+
+@c @href(URL, TITLE)
+@c -----------------
+@c A replacement for @uref that puts the URL in the footnotes when
+@c not in HTML.
+@ifhtml
+@macro href{url, title}
+@uref{\url\, \title\}
+@end macro
+@end ifhtml
+@ifnothtml
+@macro href{url, title}
+\title\@footnote{\title\, @url{\url\}.}
+@end macro
+@end ifnothtml
+
+@macro irvm
+@acronym{IRVM}
+@end macro
+
+@macro havm
+@acronym{HAVM}
+@end macro
+
+@macro spim
+@acronym{SPIM}
+@end macro
+
+@copying
+
+This manual is for @irvm{} (version @value{VERSION},
+@value{UPDATED}).
+
+Copyright @copyright{} 2014 Pablo de Oliveira
+
+Copyright @copyright{} 2003, 2004, 2005, 2006 Robert Anisko.
+
+@quotation
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the @acronym{GNU} Free Documentation License,
+Version 1.1 or any later version published by the Free Software
+Foundation; with no Invariant Sections, with the Front-Cover texts
+being ``A @acronym{GNU} Manual,'' and with the Back-Cover Texts as in
+(a) below.  A copy of the license is included in the section entitled
+``@acronym{GNU} Free Documentation License.''
+
+(a) The @acronym{FSF}'s Back-Cover Text is: ``You have freedom to copy
+and modify this @acronym{GNU} Manual, like @acronym{GNU} software.
+Copies published by the Free Software Foundation raise funds for
+@acronym{GNU} development.''
+@end quotation
+@end copying
+
+@dircategory GNU programming tools
+@direntry
+* irvm: (irvm).       Intermediate Tree Representation Virtual Machine.
+@end direntry
+
+@titlepage
+@title Irvm
+@subtitle An Intermediate Tree Representation Virtual Machine.
+@subtitle @value{UPDATED}, @acronym{IRVM} Version @value{VERSION}
+
+@author Pablo de Oliveira
+
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@contents
+
+@ifnottex
+@node Top
+@top Irvm
+@insertcopying
+@end ifnottex
+
+
+@menu
+* Introduction::                Introduction
+* Invoking irvm::               Command Line Interface
+* The Tree IR::                 The Tree Intermediate Representation
+* Copying This Manual::         How to make copies of this manual
+
+@end menu
+
+@node Introduction
+@chapter Introduction
+
+
+@irvm{} is a virtual machine designed to execute simple register based high
+level intermediate code.  It is based on the intermediate representations
+("canonicalized" or not) defined by Andrew Appel in his "Modern Compiler
+Implementation".  For more information about the Andrew Appel's Modern Compiler
+Implementation book series please visit
+@uref{https://www.cs.princeton.edu/~appel/modern/c/, Andrew Appel's home page}.
+
+Its features are:
+@itemize @minus
+@item
+tree-like source language (two way conditional jumps, arbitrarily nested
+subroutines calls, etc.)
+
+@item
+threaded source language (one way conditional jumps, etc.)
+
+@item
+a runtime library comparable to @spim{}'s
+@end itemize
+
+@irvm{} is inspired by @havm{} the Tree virtual machine developped by Robert
+Anisko at @acronym{EPITA}. For more information about @havm{}, please visit its
+@uref{http://www.lrde.epita.fr/wiki/Havm, project page}.
+
+@havm{} is a very robust Tree Virtual Machine, but is currently unable to
+support Tree programs that break the control flow from inside an expression
+evaluation (see
+@uref{https://www.lrde.epita.fr/~akim/ccmp/doc/havm.html#Known-Problems,, HAVM
+documentation section 3 Known Problems}).  For example, @havm{} is unable to
+interpret the Tree IR generated from the following Tiger source program.
+
+@example
+print_int (if 0 | 0 then 0 else 1)
+@end example
+
+In constract, @irvm{} was written to fully support theses programs. In @irvm{},
+@code{Jumps} and @code{CJumps} breaking out of expressions nodes are properly
+handled.
+
+
+
+@node Invoking irvm
+@chapter Invoking @irvm{}
+
+To invoke @command{irvm} run
+
+@example
+irvm @var{options} @var{file}
+@end example
+
+@noindent
+where @file{file} is a simple text file, and @var{options} is any
+combination of the following options:
+
+@table @option
+@item -h
+@itemx --help
+Displays a help message and exits.
+
+@item -V
+@itemx --version
+Displays the version number and exits.
+
+@item -t
+@itemx --trace
+Produces detailed execution traces on stderr.
+This option is very useful when debugging a Tree program.
+@end table
+
+@node The Tree IR
+@chapter The Tree IR
+
+@irvm{} supports two different source languages, @acronym{HIR} and
+@acronym{LIR}, the second being a subset of the first one.
+
+@menu
+* HIR::                         High Level Language
+* Special Temporaries::         Aka Special Registers
+* The irvm Runtime::            Primitive Functions
+* LIR::                         The Low Level Subset of HIR
+@end menu
+
+@node HIR
+@section @acronym{HIR}
+@cindex High Level Intermediate Representation
+@cindex @acronym{HIR}
+
+In both languages, white spaces are ignored, and comments are introduced
+by @kbd{#} and end at the end of line, or opened by @kbd{/*} and closed
+by the next @kbd{*/}.  @acronym{HIR} is defined by the following
+grammar:
+
+@example
+Exp ::= "const" int
+     |  Name
+     |  "temp" Temp
+     |  "binop" Oper Exp Exp
+     |  "mem" Exp
+     |  "call" Name [@{Exp@}] "call end"
+     |  "eseq" Stm Exp
+     .
+
+Stm ::= "move" "temp" Temp Exp
+     |  "move" "mem" Exp Exp
+     |  "sxp" Exp
+     |  "jump" Name Label
+     |  "cjump" Relop Exp Exp Name Name
+     |  "seq" [@{Stm@}] "seq end"
+     |  "label" Label
+     |  "label" Label Literal
+     .
+
+Name  ::= "name" Label
+
+Oper  ::= "add" | "sub" | "mul" | "div" | "mod"
+Relop ::= "eq" | "ne" | "lt" | "gt" | "le" | "ge"
+Label ::= Ident
+Temp  ::= fp | rv | sp | Ident
+Ident ::= [$A-Za-z0-9_]*
+@end example
+
+@noindent
+In addition, the following alternative syntax for operators is
+supported.
+
+@example
+Oper  ::= "(+)" | "(-)" | "(*)" | "(/)" | "(%)"
+Relop ::= "(=)" | "(<>)" | "(<)" | "(>)" | "(<=)" | "(>=)"
+@end example
+
+@noindent A @code{Literal} is almost a Tiger string: it is enclosed
+by @samp{"}, with support for the following escapes:
+@table @asis
+@item @samp{\a}, @samp{\b}, @samp{\f}, @samp{\n}, @samp{\r}, @samp{\t}, @samp{\v}
+control characters.
+
+@item \x@var{num}
+The character which code is @var{num} in hexadecimal (upper case or
+lower case or mixed). @var{num} is composed of exactly 2 hexadecimal
+characters.
+
+@item @samp{\\}
+A single backslash.
+
+@item @samp{\'}
+A simple quote.
+
+@item @samp{\"}
+A double quote.
+
+@item \@var{character}
+If no rule above applies, this is an error.
+@end table
+
+@node Special Temporaries
+@section Special Temporaries
+
+Some of the temporaries have a special meaning for @irvm{}:
+
+@table @code
+@item fp
+The frame pointer.
+
+@item sp
+The stack pointer.  One cannot read beyond @code{sp}.
+
+@item rv
+The result register.  Functions should store their result there.  This
+is the strongest dependency on registers, since an expression such as
+@samp{1 + call (fact, 2)} needs to ``know'' that the result of @samp{call
+(fact, 2}) is to be ``read'' in @code{rv}.
+@end table
+
+
+@node The irvm Runtime
+@section The @irvm{} Runtime
+
+@irvm{} provides a set of predefined functions, modeled after the Tiger
+runtime.
+
+@set irvm
+@include builtins.texi
+
+@node LIR
+@section @acronym{LIR}
+@cindex Low Level Intermediate Representation
+@cindex @acronym{LIR}
+
+A valid @acronym{LIR} program is a valid @acronym{HIR} program that in
+addition verifies the following constraints:
+@table @asis
+@item no nested @code{seq}
+The @acronym{HIR} tree must be flattened in a single thread of
+execution.  Therefore, there must be at most one @code{seq} per function.
+
+@item no @code{eseq}
+Similarly, the instruction @code{eseq} must not be used.
+
+@item no nested @code{call}
+Calls cannot be embedded within other calls.  Actually, the restriction
+is even stronger than this: a @code{call} can only appear in the
+following patterns:
+@table @samp
+@item move @var{dest} call @dots{}
+A function call.
+
+@item sxp call @dots{}
+A procedure call.
+@end table
+
+@item one way @code{cjump}
+@code{cjump}s must be normalized in such a way that they are always
+followed by their negative destination.
+@end table
+
+@c ======================================================================
+
+@node Copying This Manual
+@appendix Copying This Manual
+
+@menu
+* GNU Free Documentation License::  License for copying this manual.
+@end menu
+
+@include fdl.texi
+
+@bye

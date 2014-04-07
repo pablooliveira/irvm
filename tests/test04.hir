@@ -1,0 +1,523 @@
+seq
+  label _L2mul
+  move
+    temp x5
+    temp fp
+  move
+    temp fp
+    temp sp
+  move
+    temp sp
+    binop (-)
+      temp sp
+      const 4
+  move
+    mem
+      temp fp
+    temp i0
+  move
+    temp x3
+    temp i1
+  move
+    temp x4
+    temp i2
+  move
+    temp rv
+    binop (/)
+      binop (*)
+        temp x3
+        temp x4
+      mem
+        binop (+)
+          mem
+            temp fp
+          const -4
+  move
+    temp sp
+    temp fp
+  move
+    temp fp
+    temp x5
+  label end
+seq end
+seq
+  label _L4frac
+  move
+    temp x8
+    temp fp
+  move
+    temp fp
+    temp sp
+  move
+    temp sp
+    binop (-)
+      temp sp
+      const 4
+  move
+    mem
+      temp fp
+    temp i0
+  move
+    temp x6
+    temp i1
+  move
+    temp x7
+    temp i2
+  move
+    temp rv
+    binop (/)
+      binop (*)
+        temp x6
+        mem
+          binop (+)
+            mem
+              temp fp
+            const -4
+      temp x7
+  move
+    temp sp
+    temp fp
+  move
+    temp fp
+    temp x8
+  label end
+seq end
+seq
+  label _L6iterations
+  move
+    temp x23
+    temp fp
+  move
+    temp fp
+    temp sp
+  move
+    temp sp
+    binop (-)
+      temp sp
+      const 4
+  move
+    mem
+      temp fp
+    temp i0
+  move
+    temp x13
+    temp i1
+  move
+    temp x14
+    temp i2
+  move
+    temp rv
+    eseq
+      seq
+        move
+          temp x15
+          const 0
+        move
+          temp x16
+          binop (+)
+            mem
+              binop (+)
+                mem
+                  temp fp
+                const -8
+            binop (*)
+              temp x13
+              mem
+                binop (+)
+                  mem
+                    temp fp
+                  const -16
+        move
+          temp x17
+          binop (+)
+            mem
+              binop (+)
+                mem
+                  temp fp
+                const -12
+            binop (*)
+              temp x14
+              mem
+                binop (+)
+                  mem
+                    temp fp
+                  const -20
+        move
+          temp x18
+          const 0
+        move
+          temp x19
+          const 0
+        move
+          temp x20
+          const 0
+        move
+          temp x21
+          call
+            name _L4frac
+            mem
+              temp fp
+            const 4
+            const 1
+          call end
+        move
+          temp x22
+          call
+            name _L4frac
+            mem
+              temp fp
+            const 2
+            const 1
+          call end
+      seq end
+      eseq
+        seq
+          label _L37
+          seq
+            cjump (<)
+              binop (+)
+                call
+                  name _L2mul
+                  mem
+                    temp fp
+                  temp x20
+                  temp x20
+                call end
+                call
+                  name _L2mul
+                  mem
+                    temp fp
+                  temp x19
+                  temp x19
+                call end
+              temp x21
+             name _L41 name _L42
+            label _L42
+            jump
+              name _L39
+            jump
+              name _L40
+            label _L41
+            cjump (<)
+              temp x15
+              const 256
+             name _L38 name _L39
+            label _L40
+          seq end
+          label _L38
+          seq
+            move
+              temp x15
+              binop (+)
+                temp x15
+                const 1
+            move
+              temp x20
+              binop (+)
+                call
+                  name _L2mul
+                  mem
+                    temp fp
+                  binop (+)
+                    temp x18
+                    temp x19
+                  binop (-)
+                    temp x18
+                    temp x19
+                call end
+                temp x16
+            move
+              temp x19
+              binop (+)
+                call
+                  name _L2mul
+                  mem
+                    temp fp
+                  temp x22
+                  call
+                    name _L2mul
+                    mem
+                      temp fp
+                    temp x18
+                    temp x19
+                  call end
+                call end
+                temp x17
+            move
+              temp x18
+              temp x20
+          seq end
+          jump
+            name _L37
+          label _L39
+        seq end
+        temp x15
+  move
+    temp sp
+    temp fp
+  move
+    temp fp
+    temp x23
+  label end
+seq end
+label _L51
+"\012"
+label _L49
+"\040"
+label _L50
+"\040"
+seq
+  label _L8mandelbrot
+  move
+    temp x29
+    temp fp
+  move
+    temp fp
+    temp sp
+  move
+    temp sp
+    binop (-)
+      temp sp
+      const 24
+  move
+    mem
+      temp fp
+    temp i0
+  seq
+    move
+      temp x1
+      const 5
+    move
+      temp x2
+      const 5
+    move
+      mem
+        binop (+)
+          temp fp
+          const -4
+      const 16834
+    move
+      temp x9
+      call
+        name _L4frac
+        temp fp
+        const 16
+        const 10000
+      call end
+    move
+      temp x10
+      call
+        name _L4frac
+        temp fp
+        const 8224
+        const 10000
+      call end
+    move
+      mem
+        binop (+)
+          temp fp
+          const -8
+      binop (-)
+        temp x9
+        call
+          name _L4frac
+          temp fp
+          const 5
+          const 100
+        call end
+    move
+      mem
+        binop (+)
+          temp fp
+          const -12
+      binop (-)
+        temp x10
+        call
+          name _L4frac
+          temp fp
+          const 5
+          const 100
+        call end
+    move
+      temp x11
+      binop (+)
+        temp x9
+        call
+          name _L4frac
+          temp fp
+          const 5
+          const 100
+        call end
+    move
+      temp x12
+      binop (+)
+        temp x10
+        call
+          name _L4frac
+          temp fp
+          const 5
+          const 100
+        call end
+    move
+      mem
+        binop (+)
+          temp fp
+          const -16
+      binop (/)
+        binop (-)
+          temp x11
+          mem
+            binop (+)
+              temp fp
+              const -8
+        temp x1
+    move
+      mem
+        binop (+)
+          temp fp
+          const -20
+      binop (/)
+        binop (-)
+          temp x12
+          mem
+            binop (+)
+              temp fp
+              const -12
+        temp x2
+    seq
+      move
+        temp x28
+        binop (-)
+          temp x2
+          const 1
+      move
+        temp x24
+        const 0
+      cjump (>)
+        temp x24
+        temp x28
+       name _L45 name _L44
+      label _L43
+      move
+        temp x24
+        binop (+)
+          temp x24
+          const 1
+      label _L44
+      seq
+        move
+          temp x27
+          binop (-)
+            temp x1
+            const 1
+        move
+          temp x25
+          const 0
+        cjump (>)
+          temp x25
+          temp x27
+         name _L48 name _L47
+        label _L46
+        move
+          temp x25
+          binop (+)
+            temp x25
+            const 1
+        label _L47
+        seq
+          move
+            temp x26
+            call
+              name _L6iterations
+              temp fp
+              temp x25
+              temp x24
+            call end
+          seq
+            sxp
+              call
+                name print_int
+                temp x25
+              call end
+            sxp
+              call
+                name print
+                name _L49
+              call end
+            sxp
+              call
+                name print_int
+                temp x24
+              call end
+            sxp
+              call
+                name print
+                name _L50
+              call end
+            sxp
+              call
+                name print_int
+                temp x26
+              call end
+            sxp
+              call
+                name print
+                name _L51
+              call end
+          seq end
+        seq end
+        cjump (=)
+          temp x25
+          temp x27
+         name _L48 name _L46
+        label _L48
+      seq end
+      cjump (=)
+        temp x24
+        temp x28
+       name _L45 name _L43
+      label _L45
+    seq end
+  seq end
+  move
+    temp sp
+    temp fp
+  move
+    temp fp
+    temp x29
+  label end
+seq end
+seq
+  label main
+  move
+    temp x30
+    temp fp
+  move
+    temp fp
+    temp sp
+  move
+    temp sp
+    binop (-)
+      temp sp
+      const 4
+  move
+    mem
+      temp fp
+    temp i0
+  move
+    temp rv
+    eseq
+      sxp
+        call
+          name _L8mandelbrot
+          temp fp
+        call end
+      const 0
+  move
+    temp sp
+    temp fp
+  move
+    temp fp
+    temp x30
+  label end
+seq end

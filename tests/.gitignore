@@ -1,0 +1,6 @@
+*.out
+*.err
+*.std
+*.trace
+*.log
+*.trs

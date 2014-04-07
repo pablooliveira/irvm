@@ -1,0 +1,99 @@
+# This test is borrowed from HAVM
+/* == Low Level Intermediate representation. == */
+# Routine: fact
+label l0
+# Prologue
+move
+  temp t2
+  temp fp
+move
+  temp fp
+  temp sp
+move
+  temp sp
+  binop sub
+    temp sp
+    const 4
+move
+  mem
+    temp fp
+  temp i0
+move
+  temp t0
+  temp i1
+# Body
+seq
+  label l5
+  cjump eq
+    temp t0
+    const 0
+    name l1
+    name l2
+  label l2
+  move
+    temp t4
+    call
+      name l0
+      mem
+        temp fp
+      binop sub
+        temp t0
+        const 1
+    call end
+  move
+    temp t1
+    binop mul
+      temp t0
+      temp t4
+  label l3
+  move
+    temp rv
+    temp t1
+  jump
+    name l6
+  label l1
+  move
+    temp t1
+    const 1
+  jump
+    name l3
+  label l6
+seq end
+# Epilogue
+move
+  temp sp
+  temp fp
+move
+  temp fp
+  temp t2
+label end
+
+label l4
+	"\n"
+# Routine: _main
+label main
+# Prologue
+# Body
+seq
+  label l7
+  move
+    temp t5
+    call
+      name l0
+      temp fp
+      const 10
+    call end
+  sxp
+    call
+      name print_int
+      temp t5
+    call end
+  sxp
+    call
+      name print
+      name l4
+    call end
+  label l8
+seq end
+# Epilogue
+label end

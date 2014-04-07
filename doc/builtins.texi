@@ -1,0 +1,119 @@
+@c This file is common between the Tiger Reference Manual, and the irvm
+@c documentation.  The master copy is Tiger's.
+
+@deffn string chr (@var{code} : int)
+Return the one character long string containing the character which
+code is @var{code}.  If @var{code} does not belong to the range
+[0..255], raise a runtime error: @samp{chr: character out of range}.
+@end deffn
+
+@deffn string concat (@var{first}: string, @var{second}: string)
+Concatenate @var{first} and @var{second}.
+@end deffn
+
+@deffn void exit (@var{status}: int)
+Exit the program with exit code @var{status}.
+@ifset irvm
+Note that contrary to @acronym{SPIM} 6.5, @irvm{}'s own exit status is
+@var{status}.
+@end ifset
+@end deffn
+
+@deffn void flush ()
+Flush the output buffer.
+@end deffn
+
+@deffn string getchar ()
+Read a character on input. Return an empty string on an end of file.
+@end deffn
+
+@ifset irvm
+@deffn pointer init_array (@var{size}: int, @var{init}: pointer)
+Return the address of a freshly allocated array of @var{size}
+4 byte elements, initialized to @var{init}.
+@end deffn
+
+@deffn pointer malloc (@var{size}: int)
+Return the address of a freshly allocated block of memory of size
+@var{size}.
+@end deffn
+@end ifset
+
+@c This is because of a bug in Texinfo that we can use @deffnx inside
+@c a @ifset here.
+@deffn int not (@var{boolean}: int)
+Return 1 if @var{boolean} = 1, else return 0.
+@end deffn
+
+@ifset irvm
+@deffn int _not (@var{boolean}: int)
+Same as @code{not}, but provided under two names so that people using
+@code{_not} in their @acronym{MIPS} output don't have to change the
+@irvm{} name.  This is because the @acronym{SPIM} scanner cannot tell
+the difference between @code{not} as an instruction and as a label.
+@end deffn
+@end ifset
+
+@deffn int ord (@var{string}: string)
+Return the ascii code of the first character in @var{string} and -1 if
+the given string is empty.
+@end deffn
+
+@deffn void print (@var{string}: string)
+Print @var{string} on the standard output.
+@end deffn
+
+@deffn void print_err (@var{string}: string)
+Note: this is an EPITA extension.  Same as @code{print}, but the output
+is written to the standard error.
+@end deffn
+
+@deffn void print_int (@var{int}: int)
+@ifset irvm
+@deffnx void printint (@var{int}: int)
+@end ifset
+Note: this is an EPITA extension.  Output @var{int} in its decimal
+canonical form (equivalent to @samp{%d} for @code{printf}).
+@end deffn
+
+@deffn int size (@var{string}: string)
+Return the size in characters of the @var{string}.
+@end deffn
+
+@deffn int strcmp (@var{a}: string, @var{b}: string)
+Note: this is an EPITA extension.  Compare the strings @var{a} and
+@var{b}: return -1 if @var{a} < @var{b}, 0 if equal, and 1 otherwise.
+@end deffn
+
+@deffn int streq (@var{a}: string, @var{b}: string)
+@ifset irvm
+@deffnx int stringEqual (@var{a}: string, @var{b}: string)
+@end ifset
+Note: this is an EPITA extension.  Return 1 if the strings @var{a} and
+@var{b} are equal, 0 otherwise.  Often faster than @code{strcmp} to test
+string equality.
+@end deffn
+
+@deffn string substring (@var{string}: string, @var{first}: int, @var{length}: int)
+Return a string composed of the characters of @var{string} starting at
+the @var{first} character (0 being the origin), and composed of
+@var{length} characters (i.e., up to and including the character
+@var{first} + @var{length}).
+
+Let @var{size} be the size of the @var{string}, the following assertions
+must hold:
+@itemize
+@item
+0 <= @var{first}
+
+@item
+0 <= @var{length}
+
+@item
+@var{first} + @var{length} <= @var{size}
+@end itemize
+
+@noindent
+otherwise a runtime failure is raised: @samp{substring: arguments out
+of bounds}.
+@end deffn
