@@ -98,45 +98,41 @@ Copies published by the Free Software Foundation raise funds for
 
 
 @irvm{} is a virtual machine designed to execute simple register based high
-level intermediate code.  It is based on the intermediate representations
-("canonicalized" or not) defined by Andrew Appel in his "Modern Compiler
-Implementation".  For more information about the Andrew Appel's Modern Compiler
-Implementation book series please visit
-@uref{https://www.cs.princeton.edu/~appel/modern/c/, Andrew Appel's home page}.
+level intermediate code.  It interprets the intermediate representations
+defined by Andrew Appel in his "Modern Compiler Implementation".  For more
+information about the Andrew Appel's Modern Compiler Implementation book series
+please visit @uref{https://www.cs.princeton.edu/~appel/modern/c/, Andrew
+Appel's home page}.
 
 Its features are:
 @itemize @minus
 @item
-tree-like source language (two way conditional jumps, arbitrarily nested
-subroutines calls, etc.)
+accepts HIR tree-like source language (two way conditional jumps,
+      arbitrarily nested subroutines calls)
 
 @item
-threaded source language (one way conditional jumps, etc.)
-
+accepts LIR threaded source language (one way conditional jumps,
+      no nested subroutines calls)
 @item
-a runtime library comparable to @spim{}'s
+a runtime library comparable to SPIM's
 @end itemize
 
 @irvm{} is inspired by @havm{} the Tree virtual machine developped by Robert
 Anisko at @acronym{EPITA}. For more information about @havm{}, please visit its
 @uref{http://www.lrde.epita.fr/wiki/Havm, project page}.
 
-@havm{} is a very robust Tree Virtual Machine, but is currently unable to
-support Tree programs that break the control flow from inside an expression
-evaluation (see
-@uref{https://www.lrde.epita.fr/~akim/ccmp/doc/havm.html#Known-Problems,, HAVM
-documentation section 3 Known Problems}).  For example, @havm{} is unable to
-interpret the Tree IR generated from the following Tiger source program.
+@havm{} is a robust Tree Virtual Machine, but it does not support Tree programs
+that change the control flow by jumping outside of an expression evaluation
+(see @uref{https://www.lrde.epita.fr/~akim/ccmp/doc/havm.html#Known-Problems,,
+HAVM documentation section 3 Known Problems}).  For example, @havm{} is unable
+to interpret the Tree IR generated from the following Tiger source program.
 
 @example
 print_int (if 0 | 0 then 0 else 1)
 @end example
 
-In constract, @irvm{} was written to fully support theses programs. In @irvm{},
-@code{Jumps} and @code{CJumps} breaking out of expressions nodes are properly
-handled.
-
-
+In constract, @irvm{} fully support these programs. In @irvm{}, @code{Jump}
+and @code{CJump} breaking out of expressions nodes are properly handled.
 
 @node Invoking irvm
 @chapter Invoking @irvm{}
