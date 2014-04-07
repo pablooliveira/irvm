@@ -3,6 +3,7 @@ AM_YFLAGS = -d
 AM_LFLAGS = -i
 bin_PROGRAMS = irvm
 irvm_SOURCES = irvm.c irvm.h \
+			   consts.h \
 			   context.c context.h \
 			   decorate.c decorate.h \
 			   destroy.c destroy.h \
