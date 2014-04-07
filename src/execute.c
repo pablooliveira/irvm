@@ -12,6 +12,7 @@ struct location *current_loc;
 const char *op2str[] = { "(+)", "(-)", "(*)", "(/)", "(%)" };
 const char *rop2str[] = { "(<)", "(<=)", "(>)", "(>=)", "(<>)", "(=)" };
 
+/* applies relative operator ROPR to LEFT and RIGHT operands */
 static bool
 do_cmp (enum RELOP ropr, int32_t left, int32_t right)
 {
@@ -34,6 +35,7 @@ do_cmp (enum RELOP ropr, int32_t left, int32_t right)
     }
 }
 
+/* applies arithmetic operator OPR to LEFT and RIGHT operands */
 static int32_t
 do_binop (enum OPER opr, int32_t left, int32_t right)
 {
@@ -54,6 +56,8 @@ do_binop (enum OPER opr, int32_t left, int32_t right)
     }
 }
 
+/* runs the IR tree NODE, if TRACE is true each
+   executed node is printed */
 void
 execute (struct Node *n, bool trace)
 {
@@ -61,10 +65,13 @@ execute (struct Node *n, bool trace)
 NEXT:
   if (n == NULL)
     errl (current_loc, 1, "program ended, but no label end was found");
+
+  /* update current_loc, so error messages are localized */
   current_loc = &n->loc;
 
   switch (n->kind)
     {
+    /* Statements */
     case T_MOVE_MEM:
         {
           struct MoveMem *m = container_of (n, struct MoveMem, node);
@@ -113,7 +120,7 @@ NEXT:
           goto NEXT;
         }
 
-      /* Expressions */
+    /* Expressions */
     case T_CONST:
         {
           struct Const *c = container_of (n, struct Const, node);
@@ -167,6 +174,8 @@ NEXT:
           struct Node *arg = NULL;
 
           TRACE ("call %s", c->name);
+
+          /* first, read all arguments into an array */
           int count = 0;
           int32_t args[MAX_ARGS];
           list_for_each (c->arguments, arg, list)
@@ -177,16 +186,19 @@ NEXT:
               count++;
             }
 
+          /* then, push a new context */
           push_context (n);
           int i;
           for (i = 0; i < count; i++)
             {
+              /* and set i0..in temporaries */
               set_temp (argid[i], args[i]);
               TRACE ("    %s = %d", argid[i], args[i]);
             }
 
           if (c->primitive)
             {
+              /* a primitive is directly executed */
               int32_t result = c->primitive ();
               TRACE ("call end %s = %d", c->name, result);
               pop_context ();
@@ -195,7 +207,7 @@ NEXT:
             }
           else
             {
-              //retstack_push (n);
+              /* a user defined function requires a jump */
               n = c->target;
             }
           goto NEXT;
@@ -203,12 +215,18 @@ NEXT:
     case T_LABEL:
         {
           struct Label *l = container_of (n, struct Label, node);
+
+          /* label end is special: it marks the end of a function */
           if (l->name == end)
             {
-
+              /* result is in the rv temporary */
               int32_t result = get_temp (rv);
 
+              /* pop the context */
               struct Node *caller = pop_context ();
+
+              /* NULL is used as a sentinel in the context stack,
+                 it marks the end of the program */
               if (caller == NULL)
                 {
                   TRACE ("end of program");
@@ -218,11 +236,16 @@ NEXT:
 
               struct Call *c = container_of (caller, struct Call, node);
               TRACE ("call end %s = %d", c->name, result);
+
+              /* set result of function into the caller node */
               set_result (caller, result);
+
+              /* return to the caller */
               n = caller->next;
             }
           else
             {
+              /* other labels can be safely skipped */
               TRACE ("label %s", l->name);
               n = n->next;
             }
