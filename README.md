@@ -62,7 +62,7 @@ where FILE is the input IR Tree file and OPTIONS may be chosen among the followi
 
 For more information please refer to the documentation in `doc/`.
 
-##Licence
+##License
 
-IRVM is released under the GNU General Public Licence Version 3 or later.
-The Licence terms are available in the COPYING file.
+IRVM is released under the GNU General Public License Version 3 or later.  The
+Licence terms are available in the COPYING file.
