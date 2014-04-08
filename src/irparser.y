@@ -1,7 +1,6 @@
 %expect 0
-%define api.pure full
+%define api.pure
 %locations
-%define parse.trace
 %error-verbose
 %{
 #define YYLTYPE struct location
@@ -192,7 +191,7 @@ Stm :
         }
     ;
 
-Exps :  %empty
+Exps :
         {
             struct list_head * h = malloc(sizeof *h);
             list_head_init(h);
@@ -205,7 +204,7 @@ Exps :  %empty
         }
     ;
 
-Stms :  %empty
+Stms :
         {
             struct list_head * h = malloc(sizeof *h);
             list_head_init(h);
