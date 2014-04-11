@@ -1,0 +1,3 @@
+#! /bin/sh
+../src/irvm --low $srcdir/nestedseq.ir
+test $? -eq 129

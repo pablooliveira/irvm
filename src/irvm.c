@@ -24,6 +24,7 @@ along with IRVM.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "config.h"
 
+#include "checklir.h"
 #include "context.h"
 #include "decorate.h"
 #include "error.h"
@@ -46,10 +47,15 @@ extern FILE *yyin;
 /* is trace mode on ? */
 bool trace;
 
+/* is check LIR mode on ? */
+bool low;
+
 /* initialize the program command-line option table */
 static struct opt_table opts[] = {
     OPT_WITHOUT_ARG ("--trace|-t", opt_set_bool, &trace,
                      "trace execution"),
+    OPT_WITHOUT_ARG ("--low|-l", opt_set_bool, &low,
+                     "check that the input is valid LIR before execution"),
     OPT_WITHOUT_ARG ("--help|-h", opt_usage_and_exit,
                      "[OPTIONS] INPUT-FILE", "print this help message"),
     OPT_WITHOUT_ARG ("--version|-V", opt_version_and_exit,
@@ -83,6 +89,10 @@ irvm (void)
   /* decorate the tree */
   compute_exec_order (irtree);
   bind_labels (irtree);
+
+  /* if necessary check that input is valid LIR */
+  if (low && !checklir ())
+    errx (129, "input is not valid LIR");
 
   /* find MAIN IR label */
   struct Node *main_label = find_label (mainid);

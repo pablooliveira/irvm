@@ -1,0 +1,8 @@
+label main
+seq
+  seq
+    sxp
+      const 0
+  seq end
+seq end
+label end

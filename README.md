@@ -60,6 +60,8 @@ where FILE is the input IR Tree file and OPTIONS may be chosen among the followi
 
  * `-t / --trace`: Produces detailed execution traces on stderr. This option is very useful when debugging a Tree program.
 
+ * `-l / --low`: Checks that the input is a valid LIR program before execution.
+
 For more information please refer to the documentation in `doc/`.
 
 ##License

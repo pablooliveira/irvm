@@ -160,6 +160,10 @@ Displays the version number and exits.
 @itemx --trace
 Produces detailed execution traces on stderr.
 This option is very useful when debugging a Tree program.
+
+@item -l
+@itemx --low
+Checks that the input is a valid LIR program before execution.
 @end table
 
 @node The Tree IR
