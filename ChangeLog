@@ -1,0 +1,4 @@
+2014-04-11    IRVM v0.0.2
+
+    * Added --low option that checks that the input is valid LIR before
+      execution

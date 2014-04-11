@@ -1,4 +1,4 @@
-AC_INIT([irvm], [0.0.1], [pablo@sifflez.org])
+AC_INIT([irvm], [0.0.2], [pablo@sifflez.org])
 AM_INIT_AUTOMAKE([-Wall subdir-objects silent-rules foreign])
 AM_SILENT_RULES([yes])
 AC_CONFIG_HEADERS([config.h])

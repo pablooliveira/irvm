@@ -1,4 +1,4 @@
-IRVM 0.0.1
+IRVM 0.0.2
 ==========
 
 IRVM is a virtual machine designed to execute simple register based high level
