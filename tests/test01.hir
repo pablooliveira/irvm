@@ -26,5 +26,3 @@ label main
          call end
      seq end
      label end
-
-label print_int
