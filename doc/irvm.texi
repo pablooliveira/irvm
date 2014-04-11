@@ -131,7 +131,7 @@ to interpret the Tree IR generated from the following Tiger source program.
 print_int (if 0 | 0 then 0 else 1)
 @end example
 
-In constract, @irvm{} fully support these programs. In @irvm{}, @code{Jump}
+In contrast, @irvm{} fully support these programs. In @irvm{}, @code{Jump}
 and @code{CJump} breaking out of expressions nodes are properly handled.
 
 @node Invoking irvm

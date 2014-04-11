@@ -31,7 +31,7 @@ following Tiger source program.
 
     print_int (if 0 | 0 then 0 else 1)
 
-In constract, IRVM fully supports these programs. In IRVM, `Jump` and
+In contrast, IRVM fully supports these programs. In IRVM, `Jump` and
 `CJump` breaking out of expressions nodes are properly handled.
 
 ##Installation
