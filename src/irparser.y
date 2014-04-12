@@ -4,6 +4,7 @@
 %error-verbose
 %{
 #define YYLTYPE struct location
+#include <assert.h>
 #include <stdlib.h>
 #include "irvm.h"
 #include "error.h"
@@ -221,5 +222,6 @@ Stms :
 void
 yyerror(YYLTYPE* loc, const char * err)
 {
+    assert(err);
     warnl(loc, "%s", err);
 }
