@@ -1,4 +1,4 @@
-irvm_CFLAGS = -pedantic -Wall -Werror -std=gnu99 
+irvm_CFLAGS = -pedantic -Wall -std=gnu99
 AM_YFLAGS = -d
 AM_LFLAGS = -i
 bin_PROGRAMS = irvm
