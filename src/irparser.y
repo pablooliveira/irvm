@@ -1,5 +1,5 @@
 %expect 0
-%define api.pure
+%define api.pure full
 %locations
 %error-verbose
 %{
