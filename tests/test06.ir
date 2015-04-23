@@ -1,0 +1,6 @@
+label main
+  sxp
+    binop (>)
+        const 4
+        const 5
+label end

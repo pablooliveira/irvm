@@ -1,0 +1,3 @@
+#! /bin/sh
+../src/irvm $srcdir/test06.ir 2> test06.err
+grep '3.10-3.12' test06.err

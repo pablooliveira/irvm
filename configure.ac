@@ -1,7 +1,9 @@
-AC_INIT([irvm], [0.0.2], [pablo@sifflez.org])
+AC_INIT([irvm], [0.0.3], [pablo@sifflez.org])
+AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall subdir-objects silent-rules foreign])
 AM_SILENT_RULES([yes])
 AC_CONFIG_HEADERS([config.h])
+AC_PROG_BISON([2.7])
 AC_PROG_YACC
 AC_PROG_LEX
 AC_PROG_CC
@@ -44,4 +46,3 @@ AC_CONFIG_FILES([Makefile
                  doc/Makefile
                  tests/Makefile])
 AC_OUTPUT
-

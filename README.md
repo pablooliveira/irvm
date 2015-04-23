@@ -1,4 +1,4 @@
-IRVM 0.0.2
+IRVM 0.0.3
 ==========
 
 IRVM is a virtual machine designed to execute simple register based high level
@@ -13,7 +13,7 @@ IRVM features are:
  * accepts HIR tree-like source language (two way conditional jumps,
       arbitrarily nested subroutines calls)
 
- * accepts LIR threaded source language (one way conditional jumps, 
+ * accepts LIR threaded source language (one way conditional jumps,
       no nested subroutines calls)
 
  * a runtime library comparable to SPIM's
