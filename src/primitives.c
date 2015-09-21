@@ -125,8 +125,10 @@ tig_substring (void)
 
   char *s = read_string (addr + start);
   size_t len = strlen (s);
-  if (length > len || length < 0)
-    errl (current_loc, 1, "substring: argument out of bounds");
+  if (length > len || length < 0) {
+    fprintf(stderr, "substring: arguments out of bounds\n");
+    exit(1);
+  }
   char new[length + 1];
   strncpy (new, s, length);
   new[length] = 0;
@@ -184,7 +186,8 @@ tig_chr (void)
 {
   int32_t c = get_temp (argid[0]);
   if (c < 0 || c > 255) {
-    errl (current_loc, 1, "chr: character out of range");
+    fprintf(stderr, "chr: character out of range\n");
+    exit(1);
   }
   return get_ascii ((char)c);
 }
