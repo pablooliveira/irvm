@@ -182,8 +182,11 @@ tig_init_array (void)
 static int32_t
 tig_chr (void)
 {
-  char c = get_temp (argid[0]);
-  return get_ascii (c);
+  int32_t c = get_temp (argid[0]);
+  if (c < 0 || c > 255) {
+    errl (current_loc, 1, "chr: character out of range");
+  }
+  return get_ascii ((char)c);
 }
 
 /* ord (string) : returns the ASCII code of the first string character */
