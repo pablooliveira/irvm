@@ -34,7 +34,7 @@ following Tiger source program.
 In contrast, IRVM fully supports these programs. In IRVM, `Jump` and
 `CJump` breaking out of expressions nodes are properly handled.
 
-##Installation
+## Installation
 
 For full instructions please read the INSTALL procedure.
 In most of the cases, typing the following commands should suffice,
@@ -46,7 +46,7 @@ In most of the cases, typing the following commands should suffice,
 For those commands to work, you should ensure that the GNU autotools are
 installed on your system.
 
-##Usage
+## Usage
 
 IRVM is invoked with the following parameters
 
@@ -64,7 +64,7 @@ where FILE is the input IR Tree file and OPTIONS may be chosen among the followi
 
 For more information please refer to the documentation in `doc/`.
 
-##License
+## License
 
 IRVM is released under the GNU General Public License Version 3 or later.  The
 Licence terms are available in the COPYING file.
