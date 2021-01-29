@@ -1,0 +1,3 @@
+#! /bin/sh
+../src/irvm $srcdir/test07.ir 2> test07.err
+grep '2.2-2.2: unterminated string' test07.err
