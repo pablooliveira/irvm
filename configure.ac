@@ -38,7 +38,7 @@ AC_C_BIGENDIAN(
                [AC_DEFINE(HAVE_BIG_ENDIAN, 1, [Define to 1 if machine is big endian])],
                [AC_DEFINE(HAVE_LITTLE_ENDIAN, 1, [Define to 1 if machine is little endian])],
                [AC_MSG_ERROR([endianess of this machine is unknown])],
-               [AC_MSG_ERROR([universial endianess not supported])]
+               [AC_MSG_ERROR([universal endianess not supported])]
                )
 
 AC_CONFIG_FILES([Makefile

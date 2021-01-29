@@ -110,6 +110,7 @@ seq[ \t]+end { return SEQEND;}
 
     <<EOF>> {
         warnl((struct location *)yylloc, "unterminated string");
+        return 0;
     }
 }
 
