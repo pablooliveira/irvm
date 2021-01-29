@@ -1,8 +1,11 @@
+2020-01-29	  IRVM v0.0.4
+		* Fixed a bug which caused an infinite loop on unterminated strings.
+			Reported by Samuel Tardieu.
+
 2015-04-23    IRVM v0.0.3
-    * Fixed a bug which caused erroneous location to be reported during
-      IR parsing. Reported by Cyril Bidault.
+		* Fixed a bug which caused erroneous location to be reported during
+			IR parsing. Reported by Cyril Bidault.
 
 2014-04-11    IRVM v0.0.2
-
-    * Added --low option that checks that the input is valid LIR before
-      execution
+		* Added --low option that checks that the input is valid LIR before
+			execution
